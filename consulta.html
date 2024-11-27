@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Acompanhamento de Pedido</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+    }
+    .status {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Acompanhe seu Pedido</h1>
+  <input type="text" id="idPedido" placeholder="Digite o ID do Pedido">
+  <button onclick="consultarPedido()">Consultar</button>
+  <div class="status" id="status"></div>
+
+  <script>
+    async function consultarPedido() {
+      const idPedido = document.getElementById("idPedido").value;
+      const url = "URL_DA_SUA_API/buscarStatus"; // Substitua pela URL da API
+      const resposta = await fetch(`${url}?idPedido=${idPedido}`);
+      const dados = await resposta.json();
+      const statusDiv = document.getElementById("status");
+
+      if (dados.erro) {
+        statusDiv.innerHTML = `<p>${dados.erro}</p>`;
+      } else {
+        statusDiv.innerHTML = `
+          <p><strong>ID:</strong> ${dados.id}</p>
+          <p><strong>Cliente:</strong> ${dados.cliente}</p>
+          <p><strong>Produto:</strong> ${dados.produto}</p>
+          <p><strong>Status:</strong> ${dados.status}</p>
+          <p><strong>Última Atualização:</strong> ${dados.ultimaAtualizacao}</p>
+          <p><strong>Observações:</strong> ${dados.observacoes}</p>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>

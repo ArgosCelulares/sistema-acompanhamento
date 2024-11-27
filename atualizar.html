@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Atualizar Pedido</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+    input, button, select {
+      padding: 10px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Atualizar Status do Pedido</h1>
+  <input type="text" id="idPedido" placeholder="Digite o ID do Pedido">
+  <select id="novoStatus">
+    <option value="Pedido Realizado">Pedido Realizado</option>
+    <option value="Em Transporte">Em Transporte</option>
+    <option value="Entregue">Entregue</option>
+  </select>
+  <input type="text" id="observacoes" placeholder="Observações">
+  <button onclick="atualizarPedido()">Atualizar</button>
+  <div class="status" id="status"></div>
+
+  <script>
+    async function atualizarPedido() {
+      const idPedido = document.getElementById("idPedido").value;
+      const novoStatus = document.getElementById("novoStatus").value;
+      const observacoes = document.getElementById("observacoes").value;
+
+      const url = "URL_DA_SUA_API/atualizarStatus"; // Substitua pela URL da API
+      const resposta = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idPedido, novoStatus, observacoes })
+      });
+
+      const dados = await resposta.json();
+      const statusDiv = document.getElementById("status");
+
+      if (dados.erro) {
+        statusDiv.innerHTML = `<p>${dados.erro}</p>`;
+      } else {
+        statusDiv.innerHTML = `<p>${dados.mensagem}</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
